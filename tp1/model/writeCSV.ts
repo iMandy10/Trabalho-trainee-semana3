@@ -6,10 +6,10 @@ import { createObjectCsvWriter as createCsvWriter } from 'csv-writer';
   const csvWriter = createCsvWriter({
     path: filePath,
     header: [
-      { id: 'nome', title: 'NOME MERCADORIA' },
-      { id: 'peso', title: 'PESO' },
-      {id: 'valor', title: 'VALOR'},
-      {id: 'quantidade', title: 'QUANTIDADE'},
+      { id: 'nome', title: 'nome' },
+      { id: 'peso', title: 'peso' },
+      {id: 'valor', title: 'valor'},
+      {id: 'quantidade', title: 'quantidade'},
     ],
     append: true, 
   });
