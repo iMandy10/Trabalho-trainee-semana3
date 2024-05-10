@@ -129,4 +129,4 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-model/estoque.csv
+model/estoque.csv/
