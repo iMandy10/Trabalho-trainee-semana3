@@ -1,0 +1,23 @@
+{
+  "name": "trabalho_estoque",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "ansi-regex": "^4.1.1",
+    "csv-parser": "^3.0.0",
+    "csv-writer": "^1.6.0",
+    "minimist": "^1.2.8",
+    "prompt-sync": "^4.2.0",
+    "strip-ansi": "^5.2.0",
+    "undici-types": "^5.26.5"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Amanda Silveira",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.12.11"
+  }
+}
