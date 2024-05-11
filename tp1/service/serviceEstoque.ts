@@ -51,31 +51,32 @@ export class EstoqueService{
         console.log(itens);
         }  
     }
-    static async removerItens(identificacao: string){
+    static async removerItens(identificacao: string) {
+        if (typeof identificacao !== 'string') {
+            throw new Error("Confira se o nome do item está escrito corretamente");
+        }
+    
         let bancoDados = await readCSV(filePath);
-        let indice = bancoDados.findIndex((item) => item.nome === identificacao)
-        if(indice == -1){
-            throw new Error("Esse item não existe no nosso banco de dados")
-        }
-        else if (typeof identificacao !== 'string'){
-            throw new Error ("Confira se o nome do item está escrito corretamente")
-        }
-        else{
-            console.log(`Dados a ser removidos são: ${bancoDados[indice]}`)
-            let confirmacao = prompt("Você deseja prosseguir com a operação? S/N: ").toUpperCase()
-            if(confirmacao !== "S" && confirmacao !== "N"){
-                throw new Error ("Resposta inválida para confirmação. Digite apenas 'S' ou 'N'.")
-            }
-            else if (confirmacao === "N"){
-                console.log("Você optou por não prosseguir com a operação.")
-            }
-            else {
-            bancoDados.splice(indice,1)
-            await writeCSV(filePath, bancoDados)
-            console.log("O item desejado foi deletado com sucesso.")
+        let indice = bancoDados.findIndex((item) => item.nome === identificacao);
+    
+        if (indice === -1) {
+            throw new Error("Esse item não existe no nosso banco de dados");
+        } else {
+            console.log(`Dados a serem removidos são: ${bancoDados[indice]}`);
+            let confirmacao = prompt("Você deseja prosseguir com a operação? S/N: ").toUpperCase();
+    
+            if (confirmacao !== "S" && confirmacao !== "N") {
+                throw new Error("Resposta inválida para confirmação. Digite apenas 'S' ou 'N'.");
+            } else if (confirmacao === "N") {
+                console.log("Você optou por não prosseguir com a operação.");
+            } else {
+                bancoDados.splice(indice, 1);
+                await writeCSV(filePath, bancoDados);
+                console.log("O item desejado foi deletado com sucesso.");
             }
         }
     }
+    
     static async valorTotal(){
         const bancoDados = await readCSV(filePath);
         if(bancoDados.length === 0){
@@ -102,8 +103,8 @@ export class EstoqueService{
             throw new Error("Não há nenhum item no estoque.")
         }
         else{
-            let somaItens= bancoDados.reduce((acumulador,valor)=> acumulador + (valor.valor * valor.quantidade),0)
-            let quantidadeItens = bancoDados.reduce((acumulador,item)=> acumulador + item.quantidade,0)
+            let somaItens= bancoDados.reduce((acumulador,valor)=> acumulador + (+valor.valor * +valor.quantidade),0)
+            let quantidadeItens = bancoDados.reduce((acumulador,item)=> acumulador + +item.quantidade,0)
             const media = somaItens/quantidadeItens
             return media;
             }       
@@ -114,8 +115,8 @@ export class EstoqueService{
             throw new Error("Não há nenhum item no estoque.")
         }
         else{
-            let pesosItens=bancoDados.reduce((acumulador,item)=> acumulador + (item.peso * item.quantidade),0)
-            let quantidadeItens = bancoDados.reduce((acumulador,item)=> acumulador + item.quantidade,0)
+            let pesosItens=bancoDados.reduce((acumulador,item)=> acumulador + (+item.peso * +item.quantidade),0)
+            let quantidadeItens = bancoDados.reduce((acumulador,item)=> acumulador + +item.quantidade,0)
             const peso = pesosItens/quantidadeItens     
             return peso;
             }       
@@ -126,7 +127,7 @@ export class EstoqueService{
             throw new Error("Não há nenhum item no estoque.")
         }
         else{
-        const quantidadeItens = bancoDados.reduce((acumulador,item)=> acumulador + item.quantidade,0)
+        const quantidadeItens = bancoDados.reduce((acumulador,item)=> acumulador + +item.quantidade,0)
         return quantidadeItens;
         }
     }
