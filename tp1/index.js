@@ -14,65 +14,60 @@ const prompt = require('prompt-sync')({ sigint: true });
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         let opcao = 0;
+        (0, controleEstoque_1.iniciar)();
         while (opcao != 10) {
-            try {
-                (0, controleEstoque_1.iniciar)();
-                console.log("Digite a opção desejada ou 0 para retomar ao início.");
-                switch (opcao) {
-                    case 0:
-                        opcao = parseInt(prompt("Digite a opção desejada: "));
-                        break;
-                    case 1:
-                        let novoItem = {
-                            nome: prompt("Digite o nome: "),
-                            peso: parseFloat(prompt("Digite o peso(kg): ")),
-                            valor: parseFloat(prompt("Digite o valor: ")),
-                            quantidade: parseFloat(prompt("Digite a quantidade: "))
-                        };
-                        yield (0, controleEstoque_1.adicionar)(novoItem);
-                        opcao = parseInt(prompt("Digite a opção desejada: "));
-                        break;
-                    case 2:
-                        const nomeRemover = prompt("Digite o nome do item que deseja remover: ");
-                        yield (0, controleEstoque_1.remover)(nomeRemover);
-                        opcao = parseInt(prompt("Digite a opção desejada: "));
-                        break;
-                    case 3:
-                        yield (0, controleEstoque_1.listar)();
-                        opcao = parseInt(prompt("Digite a opção desejada: "));
-                        break;
-                    case 4:
-                        yield (0, controleEstoque_1.valor)();
-                        opcao = parseInt(prompt("Digite a opção desejada: "));
-                        break;
-                    case 5:
-                        yield (0, controleEstoque_1.peso)();
-                        opcao = parseInt(prompt("Digite a opção desejada: "));
-                        break;
-                    case 6:
-                        yield (0, controleEstoque_1.mediaValor)();
-                        opcao = parseInt(prompt("Digite a opção desejada: "));
-                        break;
-                    case 7:
-                        yield (0, controleEstoque_1.mediaPeso)();
-                        opcao = parseInt(prompt("Digite a opção desejada: "));
-                        break;
-                    case 8:
-                        yield (0, controleEstoque_1.quantItens)();
-                        opcao = parseInt(prompt("Digite a opção desejada: "));
-                        break;
-                    case 9:
-                        yield (0, controleEstoque_1.quantProdutos)();
-                        opcao = parseInt(prompt("Digite a opção desejada: "));
-                        break;
-                    default:
-                        console.log("Uma opção inválida foi digitada, por favor, digite novamente.");
-                        opcao = parseInt(prompt("Digite a opção desejada: "));
-                        break;
-                }
-            }
-            catch (error) {
-                console.log("Ocorreu um erro: ", error);
+            console.log("Digite a opção desejada ou 0 para retomar ao início.");
+            switch (opcao) {
+                case 0:
+                    opcao = parseInt(prompt("Digite a opção desejada: "));
+                    break;
+                case 1:
+                    let novoItem = {
+                        nome: prompt("Digite o nome: ").toLowerCase(),
+                        peso: parseFloat(prompt("Digite o peso(kg): ")),
+                        valor: parseFloat(prompt("Digite o valor: ")),
+                        quantidade: parseFloat(prompt("Digite a quantidade: "))
+                    };
+                    yield (0, controleEstoque_1.adicionar)(novoItem);
+                    opcao = parseInt(prompt("Digite a opção desejada: "));
+                    break;
+                case 2:
+                    const nomeRemover = prompt("Digite o nome do item que deseja remover: ").toLowerCase();
+                    yield (0, controleEstoque_1.remover)(nomeRemover);
+                    opcao = parseInt(prompt("Digite a opção desejada: "));
+                    break;
+                case 3:
+                    yield (0, controleEstoque_1.listar)();
+                    opcao = parseInt(prompt("Digite a opção desejada: "));
+                    break;
+                case 4:
+                    yield (0, controleEstoque_1.valor)();
+                    opcao = parseInt(prompt("Digite a opção desejada: "));
+                    break;
+                case 5:
+                    yield (0, controleEstoque_1.peso)();
+                    opcao = parseInt(prompt("Digite a opção desejada: "));
+                    break;
+                case 6:
+                    yield (0, controleEstoque_1.mediaValor)();
+                    opcao = parseInt(prompt("Digite a opção desejada: "));
+                    break;
+                case 7:
+                    yield (0, controleEstoque_1.mediaPeso)();
+                    opcao = parseInt(prompt("Digite a opção desejada: "));
+                    break;
+                case 8:
+                    yield (0, controleEstoque_1.quantItens)();
+                    opcao = parseInt(prompt("Digite a opção desejada: "));
+                    break;
+                case 9:
+                    yield (0, controleEstoque_1.quantProdutos)();
+                    opcao = parseInt(prompt("Digite a opção desejada: "));
+                    break;
+                default:
+                    console.log("Uma opção inválida foi digitada, por favor, digite novamente.");
+                    opcao = parseInt(prompt("Digite a opção desejada: "));
+                    break;
             }
         }
     });

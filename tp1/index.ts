@@ -5,9 +5,9 @@ const prompt = require('prompt-sync')({sigint: true});
 
 async function main () {
     let opcao:number = 0
+    iniciar() 
     while(opcao !=10){
-    try{
-iniciar()  
+       
 console.log("Digite a opção desejada ou 0 para retomar ao início.")
 switch(opcao){
     case 0:
@@ -16,7 +16,7 @@ switch(opcao){
 
     case 1: 
     let novoItem={
-        nome: prompt("Digite o nome: "),
+        nome: prompt("Digite o nome: ").toLowerCase(),
          peso: parseFloat(prompt("Digite o peso(kg): ")),
          valor: parseFloat(prompt("Digite o valor: ")),
          quantidade: parseFloat(prompt("Digite a quantidade: "))
@@ -26,7 +26,7 @@ switch(opcao){
     break;
 
     case 2:
-        const nomeRemover = prompt("Digite o nome do item que deseja remover: ")
+        const nomeRemover = prompt("Digite o nome do item que deseja remover: ").toLowerCase()
         await remover(nomeRemover)
         opcao = parseInt(prompt("Digite a opção desejada: "));
         break;
@@ -71,11 +71,7 @@ switch(opcao){
         opcao = parseInt(prompt("Digite a opção desejada: "));
         break;
 }
-}
-catch(error){
-    console.log("Ocorreu um erro: ",error)
-  
-}
+
 }
 }
 

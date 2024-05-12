@@ -4,6 +4,8 @@ import { Data } from '../model/interfaceCSV';
 const prompt = require('prompt-sync')({sigint: true});
 const filePath = './model/estoque.csv';
 const letra = /^[a-zA-Z\s]*$/;
+import * as fs from 'fs';
+
 export class EstoqueService{
 
  static async inserirItem(dados:Data){
@@ -12,7 +14,6 @@ export class EstoqueService{
     let itemExistente = itens.findIndex((item) => {
         return item.nome === dados.nome;
     })
-    console.log(itemExistente)
          if(itemExistente!== -1){
         throw new Error("Esse item já existe no nosso banco de dados.")
     }
@@ -51,6 +52,16 @@ export class EstoqueService{
         console.log(itens);
         }  
     }
+    static async  clearCSV(filePath: string): Promise<void> {
+        try {
+            // Truncar o arquivo CSV para limpar o conteúdo
+            const linha = Buffer.byteLength('nome,peso,valor,quantidade\n', 'utf8');
+            await fs.promises.truncate(filePath, linha);
+            console.log("Conteúdo do arquivo CSV foi limpo com sucesso.");
+        } catch (error) {
+            console.error("Erro ao limpar o arquivo CSV:", error);
+        }
+    }
     static async removerItens(identificacao: string) {
         if (typeof identificacao !== 'string') {
             throw new Error("Confira se o nome do item está escrito corretamente");
@@ -62,7 +73,8 @@ export class EstoqueService{
         if (indice === -1) {
             throw new Error("Esse item não existe no nosso banco de dados");
         } else {
-            console.log(`Dados a serem removidos são: ${bancoDados[indice]}`);
+            console.log("Dados a serem removidos são:")
+            console.log(bancoDados[indice])
             let confirmacao = prompt("Você deseja prosseguir com a operação? S/N: ").toUpperCase();
     
             if (confirmacao !== "S" && confirmacao !== "N") {
@@ -71,6 +83,7 @@ export class EstoqueService{
                 console.log("Você optou por não prosseguir com a operação.");
             } else {
                 bancoDados.splice(indice, 1);
+                await this.clearCSV(filePath)
                 await writeCSV(filePath, bancoDados);
                 console.log("O item desejado foi deletado com sucesso.");
             }

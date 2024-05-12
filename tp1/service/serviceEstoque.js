@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -15,6 +38,7 @@ const readCSV_1 = require("../model/readCSV");
 const prompt = require('prompt-sync')({ sigint: true });
 const filePath = './model/estoque.csv';
 const letra = /^[a-zA-Z\s]*$/;
+const fs = __importStar(require("fs"));
 class EstoqueService {
     static inserirItem(dados) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -23,7 +47,6 @@ class EstoqueService {
             let itemExistente = itens.findIndex((item) => {
                 return item.nome === dados.nome;
             });
-            console.log(itemExistente);
             if (itemExistente !== -1) {
                 throw new Error("Esse item já existe no nosso banco de dados.");
             }
@@ -61,6 +84,19 @@ class EstoqueService {
             }
         });
     }
+    static clearCSV(filePath) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                // Truncar o arquivo CSV para limpar o conteúdo
+                const linha = Buffer.byteLength('nome,peso,valor,quantidade\n', 'utf8');
+                yield fs.promises.truncate(filePath, linha);
+                console.log("Conteúdo do arquivo CSV foi limpo com sucesso.");
+            }
+            catch (error) {
+                console.error("Erro ao limpar o arquivo CSV:", error);
+            }
+        });
+    }
     static removerItens(identificacao) {
         return __awaiter(this, void 0, void 0, function* () {
             if (typeof identificacao !== 'string') {
@@ -72,7 +108,8 @@ class EstoqueService {
                 throw new Error("Esse item não existe no nosso banco de dados");
             }
             else {
-                console.log(`Dados a serem removidos são: ${bancoDados[indice]}`);
+                console.log("Dados a serem removidos são:");
+                console.log(bancoDados[indice]);
                 let confirmacao = prompt("Você deseja prosseguir com a operação? S/N: ").toUpperCase();
                 if (confirmacao !== "S" && confirmacao !== "N") {
                     throw new Error("Resposta inválida para confirmação. Digite apenas 'S' ou 'N'.");
@@ -82,6 +119,7 @@ class EstoqueService {
                 }
                 else {
                     bancoDados.splice(indice, 1);
+                    yield this.clearCSV(filePath);
                     yield (0, writeCSV_1.writeCSV)(filePath, bancoDados);
                     console.log("O item desejado foi deletado com sucesso.");
                 }
